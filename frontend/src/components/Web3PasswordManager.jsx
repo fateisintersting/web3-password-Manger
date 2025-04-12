@@ -3,6 +3,22 @@ import { Lock, Shield, Database, Key, ArrowRight, Globe, Wallet, Code } from 'lu
 
 export default function Web3PasswordManager() {
   const [activeTab, setActiveTab] = useState('features');
+  const [account, setAccount] = useState(null);
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      try {
+        const [acc] = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        setAccount(acc);
+        return acc;
+      } catch (err) {
+        console.error("Error connecting wallet:", err);
+      }
+    } else {
+      alert("Please install MetaMask to use this application");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -30,10 +46,12 @@ export default function Web3PasswordManager() {
               Get Started <ArrowRight size={20} className="ml-2" />
             </button>
             </a>
-           
-            <button className="border border-emerald-500 px-6 py-3 rounded-lg font-medium hover:bg-gray-800">
+           <a href='https://github.com/fateisintersting/web3-password-Manger'>
+           <button className="border border-emerald-500 px-6 py-3 rounded-lg font-medium hover:bg-gray-800">
               View on GitHub
             </button>
+           </a>
+           
           </div>
         </div>
       </div>
@@ -211,9 +229,16 @@ export default function Web3PasswordManager() {
             <div className="bg-gray-800 rounded-lg p-8 flex flex-col items-center">
               <Lock size={48} className="text-emerald-400 mb-4" />
               <p className="text-lg mb-6">Connect your MetaMask wallet to get started</p>
-              <button className="bg-emerald-500 hover:bg-emerald-600 px-6 py-3 rounded-lg font-medium flex items-center">
+              
+              {account ? (
+                <div className="bg-emerald-500 py-2 px-4 rounded-md text-sm">
+                  {`${account.slice(0, 6)}...${account.slice(-4)}`}
+                </div>
+              ) : (
+              <button onClick={connectWallet} className="bg-emerald-500 hover:bg-emerald-600 px-6 py-3 rounded-lg font-medium flex items-center">
                 Connect Wallet <Wallet size={20} className="ml-2" />
               </button>
+              )}
             </div>
           </div>
         </div>
@@ -222,7 +247,7 @@ export default function Web3PasswordManager() {
       {/* Footer */}
       <footer className="bg-gray-900 py-8 border-t border-gray-800">
         <div className="container mx-auto px-4 text-center text-gray-400">
-          <p>© 2025 Web3 Password Manager · Open Source · MIT License</p>
+          <p>© 2025 Web3 Password Manager · Open Source · Made By Vishal</p>
         </div>
       </footer>
     </div>
