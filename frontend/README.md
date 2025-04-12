@@ -1,12 +1,37 @@
-# React + Vite
+# 🔐 Web3 Password Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A decentralized password manager built with **React**, **Ethereum (MetaMask)**, **AES encryption**, **IPFS (Web3.Storage)**, and **Smart Contracts** on the **Ethereum blockchain**.
 
-Currently, two official plugins are available:
+> ✨ Store your passwords securely, privately, and permanently — without trusting a centralized provider.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 📦 Tech Stack
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend**: React + Tailwind CSS
+- **Blockchain**: Ethereum + Solidity Smart Contract
+- **Wallet**: MetaMask
+- **Storage**: IPFS (via Web3.Storage)
+- **Encryption**: AES (CryptoJS) with user-bound key
+
+---
+
+## ✅ Key Features
+
+| Feature | Description |
+|--------|-------------|
+| 🔒 AES Encryption | Each password is AES-encrypted with a key derived from your Ethereum account. |
+| 🔗 Blockchain-Based Indexing | Passwords are mapped to your services and CIDs stored on Ethereum. |
+| 🌐 IPFS Storage | Encrypted passwords are stored on IPFS (W3UP) – decentralized and immutable. |
+| 🪪 Wallet-based Auth | Login with MetaMask – no username/password headaches. |
+| 🧠 Your Data, Your Control | No servers. No tracking. 100% client-side and open-source. |
+
+---
+
+## 🚀 How it Works
+
+1. **You enter** your password and service name (e.g., "Gmail", "Facebook").
+2. We **encrypt the password using AES** with a secure key derived from your MetaMask account:
+   ```js
+   const signed = await ethereum.request({ method: 'personal_sign', params: [msg, account] });
+   const key = CryptoJS.SHA256(signed).toString();
