@@ -14,6 +14,8 @@ const App = ({ connectWalletProp, account }) => {
   const [services, setServices] = useState([]);
   const [selectedCID, setSelectedCID] = useState(null);
   const [privatekey, setPrivateKey] = useState("");
+  const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     if (account) {
@@ -38,6 +40,8 @@ const App = ({ connectWalletProp, account }) => {
     }
     
     const key = privatekey + account;
+    setLoading(true); // Start loading
+
 
     try {
       const cid = await encryptAndUpload(service, password, key);
@@ -69,6 +73,8 @@ const App = ({ connectWalletProp, account }) => {
       setSelectedCID(null);
     } catch (err) {
       console.error("Error deleting password:", err);
+    }finally{
+      setLoading(false); // Stop loading
     }
   };
 
@@ -101,11 +107,21 @@ const App = ({ connectWalletProp, account }) => {
           className="border border-gray-300 px-4 py-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
         />
         <button
-          onClick={handleStore}
-          className="bg-emerald-500 text-white px-4 py-3 rounded-md hover:bg-green-800 w-full transition duration-200 font-medium shadow-sm flex items-center justify-center"
-        >
-          <span className="mr-2">💾</span> Save Password
-        </button>
+  onClick={handleStore}
+  className="bg-emerald-500 text-white px-4 py-3 rounded-md hover:bg-green-800 w-full transition duration-200 font-medium shadow-sm flex items-center justify-center relative"
+>
+  <span className="mr-2 relative flex items-center">
+    💾
+    {loading && (
+      <span className="absolute -top-1 -right-1 flex h-2 w-2">
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+        <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+      </span>
+    )}
+  </span>
+  Save Password
+</button>
+
       </div>
 
       <Services services={services} onView={handleGetCID} onDelete={handleDelete} />
